@@ -153,12 +153,14 @@ xcopy "$(SolutionDir)..\lib\vld\64-bit\Microsoft.DTfW.DHL.manifest" "$(OutDir)" 
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Flipper.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjetoFisico.cpp" />
     <ClCompile Include="Pelota.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Flipper.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="ObjetoFisico.h" />
     <ClInclude Include="Pelota.h" />

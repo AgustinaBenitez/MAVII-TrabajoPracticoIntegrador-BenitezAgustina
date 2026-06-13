@@ -34,7 +34,14 @@ void Juego::Actualizar() {
     //    cosa->Actualizar();
     //}
 
+    // Controles de las paletas
+    if (flipperIzq) {
+        flipperIzq->Activar(IsKeyDown(KEY_A));
+    }
 
+    if (flipperDer) {
+        flipperDer->Activar(IsKeyDown(KEY_D));
+    }
 
     // Para reiniciar juego
     if (IsKeyPressed(KEY_R)) {
@@ -59,11 +66,15 @@ void Juego::Renderizar() {
             obj->Dibujar();
         }
 
-    // Dibujo la cosa si existe
+        // Dibujo los flippers si existen
 
-    //if (cosa) {
-    //    cosa->Dibujar();
-    //}
+        if (flipperIzq) {
+            flipperIzq->Dibujar();
+        }
+
+        if (flipperDer) {
+            flipperDer->Dibujar();
+        }
 
     // Muestro carteles
     DrawText("ESPACIO para explicaciones", 25, 21, 30, DARKGRAY);
@@ -101,6 +112,10 @@ void Juego::Reiniciar() {
 
     // Instancio la pelota y le paso el mundo, posición, radio
     objetos.emplace_back(std::make_unique<Pelota>(mundo.get(), b2Vec2{ 300.0f, 100.0f }, 15.0f, WHITE));
+
+    // Instanciamos los flippers: mundo, posicion, ancho, alto, esIzquierdo
+    flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 200.0f, 500.0f }, 100.0f, 25.0f, true);
+    flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 400.0f, 500.0f }, 100.0f, 25.0f, false);
 
 }
 

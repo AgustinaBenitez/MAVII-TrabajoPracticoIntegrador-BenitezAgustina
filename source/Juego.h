@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ObjetoFisico.h"
+#include "Flipper.h"
 
 #include <box2d.h>
 #include <vector>
@@ -15,7 +16,8 @@ private:
     std::vector<std::unique_ptr<ObjetoFisico>> objetos;
 
     // Objetos
-    //std::unique_ptr<Cosa> cosa;
+    std::unique_ptr<Flipper> flipperIzq;
+    std::unique_ptr<Flipper> flipperDer;
 
     // Para mostrar la info solicitada en pantalla sin ensuciar la simulación
     bool modoDebug = false;
