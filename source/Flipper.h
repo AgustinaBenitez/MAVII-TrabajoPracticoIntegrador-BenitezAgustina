@@ -4,6 +4,7 @@
 class Flipper : public ObjetoFisico {
 
 private:
+
     float ancho;
     float alto;
     bool izquierdo;
@@ -11,6 +12,7 @@ private:
     b2RevoluteJoint* joint;
 
 public:
+
     Flipper(b2World* mundo, b2Vec2 posicion, float w, float h, bool esIzquierdo);
     ~Flipper();
 

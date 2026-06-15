@@ -8,7 +8,7 @@ private:
     float radio;
 
     int contadorGolpes;
-    int etapaEvolucion; // 0=Bulbasaur, 1=Ivysaur, 2=Venusaur
+    int etapaEvolucion; // Ejemplo: 0=Bulbasaur, 1=Ivysaur, 2=Venusaur
 
     const char* rutasTexturas[3];
     const char* rutasSonidos[3];
@@ -16,7 +16,7 @@ private:
     Texture2D texturaActual;
     Sound sonidoActual;
 
-    // Variables para el efecto visual (vibración/achique)
+    // Variables para el efecto visual (se achica ante un golpe)
     int framesEfecto;
     float escalaVisual;
 

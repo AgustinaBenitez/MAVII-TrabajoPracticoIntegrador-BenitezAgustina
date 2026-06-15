@@ -47,12 +47,18 @@ void Juego::Iniciar() {
     SetTargetFPS(60);
 
     // Cargo música de fondo
-    //musicaFondo = LoadMusicStream("assets/Loonboon.mp3");
-    //musicaFondo.looping = true;     // Para que se repita infinitamente
-    //PlayMusicStream(musicaFondo);   // Le doy Play solo acá (una sola vez)
+    musicaFondo = LoadMusicStream("assets/audio/musicaFondo.mp3");
+    musicaFondo.looping = true;     // Para que se repita infinitamente
+    PlayMusicStream(musicaFondo);   // Le doy Play solo acá (una sola vez)
 
-    // Cargo los sonidos
-    
+
+
+
+
+    // Dejo espacio para cargar futuros sonidos
+
+
+
 
 
     // Configuro el escuchador de colisiones
@@ -66,10 +72,16 @@ void Juego::Iniciar() {
 
 void Juego::Actualizar() {
 
-    //UpdateMusicStream(musicaFondo); // Obligatorio para que suene la música
+    UpdateMusicStream(musicaFondo); // Obligatorio para que suene la música
 
     // Avanzo la simulación física
-    mundo->Step(1.0f / 60.0f, 8, 3);
+    //mundo->Step(1.0f / 60.0f, 8, 3);
+
+    // Sugerencia de Gemini: En lugar de dar 1 paso grande de 1/60, le hacemos dar 10 mini-pasos de 1/600
+    // Esto engaña a Box2D y multiplica por 10 su límite de velocidad tope
+    for (int i = 0; i < 10; i++) {
+        mundo->Step(1.0f / 600.0f, 8, 3);
+    }
 
     // Dejo esto por si necesito que algún objeto se mueva
     //if (cosa) {
@@ -103,7 +115,7 @@ void Juego::Renderizar() {
 
         ClearBackground(RAYWHITE);
 
-        // Box2D calcula, Raylib dibuja el resultado visual
+        // Box2D calcula, Raylib dibuja
         for (const auto& obj : objetos) {
             obj->Dibujar();
         }
@@ -124,7 +136,7 @@ void Juego::Renderizar() {
 
     // Dejo esto para las explicaciones futuras
     //if (modoDebug) {
-    //    if (cosa) trampolin->DibujarDebug();
+    //    if (cosa) cosa->DibujarDebug();
     //}
 
     // Para ver las coordenadas
@@ -144,21 +156,17 @@ void Juego::Reiniciar() {
     // Creo los bordes Estáticos?
     //objetos.emplace_back(std::make_unique<Borde>(mundo.get(), b2Vec2{ 500, 580 }, 0.0f, 1000.0f, 40.0f, b2_staticBody, DARKGRAY));
 
-    // Instancio los objetos
+    ////// Instancio los objetos
 
-    // Dejo esto para cuando tenga que colocar un objeto
-    //cosa = std::make_unique<Cosa>(mundo.get(), b2Vec2{ 500.0f, 500.0f });
-
-    // Limpio el vector por si apretamos la tecla R durante el juego
+    // Limpio el vector por si toco la tecla R durante el juego
     objetos.clear();
 
-    
-    // Instanciamos los flippers: mundo, posicion, ancho, alto, esIzquierdo
+    // Flippers
     flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 340.0f, 500.0f }, 100.0f, 35.0f, true);
     flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 560.0f, 500.0f }, 100.0f, 35.0f, false);
 
-    // Instancio la pelota y le paso el mundo, posición, radio
-    objetos.emplace_back(std::make_unique<Pelota>(mundo.get(), b2Vec2{ 440.0f, 100.0f }, 15.0f, WHITE));
+    // Pokebola
+    objetos.emplace_back(std::make_unique<Pelota>(mundo.get(), b2Vec2{ 370.0f, 100.0f }, 15.0f, WHITE));
 
     // Bumper Bulbasaur
     objetos.emplace_back(std::make_unique<Bumper>(mundo.get(), b2Vec2{ 300.0f, 250.0f }, 30.0f,
@@ -179,12 +187,12 @@ void Juego::Reiniciar() {
 
 Juego::~Juego() {
 
-    // Limpio los objetos explícitamente AHORA.
+    // Limpio los objetos explícitamente AHORA ---- Sugerencia de Gemini
     // Esto fuerza a que todos los DestroyBody se ejecuten mientras el mundo sigue vivo.
     objetos.clear();
 
     // Descargo los recursos de Raylib
-    //UnloadMusicStream(musicaFondo);
+    UnloadMusicStream(musicaFondo);
     //UnloadSound(sonidoX);
 
 }

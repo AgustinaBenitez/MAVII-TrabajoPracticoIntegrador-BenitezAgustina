@@ -17,7 +17,6 @@ public:
 
     virtual void Dibujar() = 0;
 
-    // Método virtual para que las clases hijas reaccionen a los choques
-    virtual void Golpeado() {}
+    virtual void Golpeado() {} // Para que las clases hijas reaccionen a los choques
 
 };

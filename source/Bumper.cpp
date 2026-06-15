@@ -26,13 +26,14 @@ Bumper::Bumper(b2World* mundo, b2Vec2 posicion, float r,
     texturaActual = LoadTexture(rutasTexturas[0]);
     sonidoActual = LoadSound(rutasSonidos[0]);
 
+    // Le doy la forma y seteo propiedades
     b2CircleShape formaBumper;
     formaBumper.m_radius = radio;
 
     b2FixtureDef fixBumper;
     fixBumper.shape = &formaBumper;
     fixBumper.friction = 0.0f;
-    fixBumper.restitution = 1.5f;
+    fixBumper.restitution = 50.5f;
 
     cuerpo->CreateFixture(&fixBumper);
 
@@ -47,19 +48,19 @@ Bumper::~Bumper() {
 
 void Bumper::Golpeado() {
 
-    PlaySound(sonidoActual);
+    PlaySound(sonidoActual); // Es decir, el que corresponde al bumper golpeado
 
     // Efecto visual
     framesEfecto = 10; // Lo achico durante 10 frames
     escalaVisual = 0.8f; // Se achica a un 80% de su tamaño
 
-    // Lógica de evolución
+    // Lógica para la evolución
     contadorGolpes++;
 
-    if (etapaEvolucion == 0 && contadorGolpes >= 15) {
+    if (etapaEvolucion == 0 && contadorGolpes >= 16) {
         Evolucionar();
     }
-    else if (etapaEvolucion == 1 && contadorGolpes >= 35) { // 15 + 20 = 35 totales
+    else if (etapaEvolucion == 1 && contadorGolpes >= 36) {
         Evolucionar();
     }
 
@@ -67,7 +68,7 @@ void Bumper::Golpeado() {
 
 void Bumper::Evolucionar() {
 
-    // Indispensable descargar los recursos viejos para evitar memory leaks ---- Me ayudó Gemini porque no encontraba por qué los estaba teniendo
+    // Indispensable descargar los recursos viejos para evitar memory leaks ---- Me ayudó Gemini porque yo por mí misma no encontraba por qué los estaba teniendo
     UnloadTexture(texturaActual);
     UnloadSound(sonidoActual);
 
@@ -92,7 +93,7 @@ void Bumper::Dibujar() {
 
     b2Vec2 pos = cuerpo->GetPosition();
 
-    // Lógica del efecto visual de los golpes
+    // Lógica para el efecto visual de los golpes
     if (framesEfecto > 0) {
         framesEfecto--;
     }

@@ -25,15 +25,17 @@ private:
     std::unique_ptr<b2World> mundo;
     std::vector<std::unique_ptr<ObjetoFisico>> objetos;
 
-    // Audio + escuchador
-    //Music musicaFondo;
+    // Audio
+    Music musicaFondo;
+
+    // Listener
     std::unique_ptr<EscuchadorColisiones> escuchador;
 
     // Objetos
     std::unique_ptr<Flipper> flipperIzq;
     std::unique_ptr<Flipper> flipperDer;
 
-    // Para mostrar la info solicitada en pantalla sin ensuciar la simulación
+    // Para mostrar la info solicitada en pantalla sin ensuciar la pantalla de juego
     bool modoDebug = false;
 
 public:

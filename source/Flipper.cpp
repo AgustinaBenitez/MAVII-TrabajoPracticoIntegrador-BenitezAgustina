@@ -82,7 +82,7 @@ Flipper::Flipper(b2World* mundo, b2Vec2 posicion, float w, float h, bool esIzqui
 
     }
 
-    // Configuramos el motor del joint (apagado por defecto)
+    // Motor del joint (apagado por defecto)
     defJoint.enableMotor = true;
     defJoint.maxMotorTorque = 100000000.0f; // Fuerza bruta del paletazo
     defJoint.motorSpeed = 0.0f;
@@ -134,15 +134,12 @@ void Flipper::Dibujar() {
         anchoTextura = (float)texturaPuerro.width;
     }
     else {
-        anchoTextura = -(float)texturaPuerro.width; // Espejamos la imagen
+        anchoTextura = -(float)texturaPuerro.width; // Negativo para espejar
     }
 
     Rectangle origen = { 0.0f, 0.0f, anchoTextura, (float)texturaPuerro.height };
-
-    // pos.x y pos.y ya son el centro físico real del objeto
     Rectangle destino = { pos.x, pos.y, ancho, alto };
 
-    // El eje de rotación visual es siempre el centro de la textura
     Vector2 ejeRotacion = { ancho / 2.0f, alto / 2.0f };
 
     DrawTexturePro(texturaPuerro, origen, destino, ejeRotacion, angulo, WHITE);
