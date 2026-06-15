@@ -10,6 +10,9 @@ ObjetoFisico::ObjetoFisico(b2World* mundo, b2Vec2 posicion, float angulo, b2Body
     defCuerpo.position = posicion;
     defCuerpo.angle = angulo;
 
+    // Vinculo el cuerpo físico de Box2D con esta instancia de C++ --- Sugerencia de Gemini
+    defCuerpo.userData.pointer = reinterpret_cast<uintptr_t>(this);
+
     // Para que cree el cuerpo y me devuelva el puntero
     cuerpo = mundo->CreateBody(&defCuerpo);
 

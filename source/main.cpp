@@ -16,13 +16,17 @@ MAV II - Entrega Actividad Integradora - El Laboratorio Mecánico de Mavix - Beni
 
 int main() {
 
-    Juego juego;
-    juego.Iniciar();
+    {
 
-    while (!WindowShouldClose()) {
+        Juego juego;
+        juego.Iniciar();
 
-        juego.Actualizar();
-        juego.Renderizar();
+        while (!WindowShouldClose()) {
+
+            juego.Actualizar();
+            juego.Renderizar();
+
+        }
 
     }
 

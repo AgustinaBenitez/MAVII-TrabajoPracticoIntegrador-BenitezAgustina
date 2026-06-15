@@ -13,7 +13,7 @@ Pelota::Pelota(b2World* mundo, b2Vec2 posicion, float r, Color col)
     // Propiedades
     b2FixtureDef fixPelota;
     fixPelota.shape = &formaPelota;
-    fixPelota.density = 0.5f;
+    fixPelota.density = 0.01f;
     fixPelota.friction = 1.0f;
     fixPelota.restitution = 0.6f;
 

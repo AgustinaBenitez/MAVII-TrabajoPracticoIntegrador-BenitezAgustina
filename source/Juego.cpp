@@ -1,12 +1,37 @@
 #include "Juego.h"
 #include "Pelota.h"
+#include "Bumper.h"
 
 #include <raylib.h>
+
+// Implementación del escuchador
+EscuchadorColisiones::EscuchadorColisiones() {}
+
+void EscuchadorColisiones::BeginContact(b2Contact* contacto) {
+
+    // Obtengo los cuerpos que chocaron
+    b2Body* cuerpoA = contacto->GetFixtureA()->GetBody();
+    b2Body* cuerpoB = contacto->GetFixtureB()->GetBody();
+
+    // Recupero los punteros que le pegué al userData en ObjetoFisico.cpp
+    ObjetoFisico* objA = reinterpret_cast<ObjetoFisico*>(cuerpoA->GetUserData().pointer);
+    ObjetoFisico* objB = reinterpret_cast<ObjetoFisico*>(cuerpoB->GetUserData().pointer);
+
+    // Si existen, les aviso que los golpearon
+    if (objA != nullptr) {
+        objA->Golpeado();
+    }
+
+    if (objB != nullptr) {
+        objB->Golpeado();
+    }
+
+}
 
 Juego::Juego() {
 
     // Inicializo gravedad
-    b2Vec2 gravedad(0.0f, 9.8f);
+    b2Vec2 gravedad(0.0f, 150.0f);
 
     // Inicializo mundo físico
     mundo = std::make_unique<b2World>(gravedad);
@@ -17,7 +42,22 @@ void Juego::Iniciar() {
 
     InitWindow(900, 600, "MAVII - Entrega Actividad Integradora - Benitez Agustina");
 
+    InitAudioDevice();
+
     SetTargetFPS(60);
+
+    // Cargo música de fondo
+    //musicaFondo = LoadMusicStream("assets/Loonboon.mp3");
+    //musicaFondo.looping = true;     // Para que se repita infinitamente
+    //PlayMusicStream(musicaFondo);   // Le doy Play solo acá (una sola vez)
+
+    // Cargo los sonidos
+    
+
+
+    // Configuro el escuchador de colisiones
+    escuchador = std::make_unique<EscuchadorColisiones>();
+    mundo->SetContactListener(escuchador.get());
 
     // Cargo todos los objetos
     Reiniciar();
@@ -25,6 +65,8 @@ void Juego::Iniciar() {
 }
 
 void Juego::Actualizar() {
+
+    //UpdateMusicStream(musicaFondo); // Obligatorio para que suene la música
 
     // Avanzo la simulación física
     mundo->Step(1.0f / 60.0f, 8, 3);
@@ -110,13 +152,39 @@ void Juego::Reiniciar() {
     // Limpio el vector por si apretamos la tecla R durante el juego
     objetos.clear();
 
-    // Instancio la pelota y le paso el mundo, posición, radio
-    objetos.emplace_back(std::make_unique<Pelota>(mundo.get(), b2Vec2{ 300.0f, 100.0f }, 15.0f, WHITE));
-
+    
     // Instanciamos los flippers: mundo, posicion, ancho, alto, esIzquierdo
-    flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 200.0f, 500.0f }, 100.0f, 25.0f, true);
-    flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 400.0f, 500.0f }, 100.0f, 25.0f, false);
+    flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 340.0f, 500.0f }, 100.0f, 35.0f, true);
+    flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 560.0f, 500.0f }, 100.0f, 35.0f, false);
+
+    // Instancio la pelota y le paso el mundo, posición, radio
+    objetos.emplace_back(std::make_unique<Pelota>(mundo.get(), b2Vec2{ 440.0f, 100.0f }, 15.0f, WHITE));
+
+    // Bumper Bulbasaur
+    objetos.emplace_back(std::make_unique<Bumper>(mundo.get(), b2Vec2{ 300.0f, 250.0f }, 30.0f,
+        "assets/img/texturaBulbasaur.png", "assets/img/texturaIvysaur.png", "assets/img/texturaVenusaur.png",
+        "assets/audio/sonidoBulbasaur.wav", "assets/audio/sonidoIvysaur.wav", "assets/audio/sonidoVenasaur.wav"));
+
+    // Bumper Charmander
+    objetos.emplace_back(std::make_unique<Bumper>(mundo.get(), b2Vec2{ 600.0f, 250.0f }, 30.0f,
+        "assets/img/texturaCharmander.png", "assets/img/texturaCharmeleon.png", "assets/img/texturaCharizard.png",
+        "assets/audio/sonidoCharmander.wav", "assets/audio/sonidoCharmeleon.wav", "assets/audio/sonidoCharizard.wav"));
+
+    // Bumper Squirtle
+    objetos.emplace_back(std::make_unique<Bumper>(mundo.get(), b2Vec2{ 450.0f, 350.0f }, 30.0f,
+        "assets/img/texturaSquirtle.png", "assets/img/texturaWartortle.png", "assets/img/texturaBlastoise.png",
+        "assets/audio/sonidoSquirtle.wav", "assets/audio/sonidoWartortle.wav", "assets/audio/sonidoBlastoise.wav"));
 
 }
 
-Juego::~Juego() {}
+Juego::~Juego() {
+
+    // Limpio los objetos explícitamente AHORA.
+    // Esto fuerza a que todos los DestroyBody se ejecuten mientras el mundo sigue vivo.
+    objetos.clear();
+
+    // Descargo los recursos de Raylib
+    //UnloadMusicStream(musicaFondo);
+    //UnloadSound(sonidoX);
+
+}

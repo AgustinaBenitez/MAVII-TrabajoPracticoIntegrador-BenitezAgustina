@@ -9,13 +9,36 @@ Flipper::Flipper(b2World* mundo, b2Vec2 posicion, float w, float h, bool esIzqui
 
     texturaPuerro = LoadTexture("assets/img/texturaPuerro.png");
 
-    // Armo la forma rectangular de la paleta
-    b2PolygonShape formaFlipper;
-    formaFlipper.SetAsBox(ancho / 2.0f, alto / 2.0f);
+    // Armo la forma rectangular de la paleta que es más chica que los bordes de la imagen
+    b2Vec2 vertices[4];
 
+    if (izquierdo) {
+
+        // Defino los 4 puntos en sentido anti-horario alrededor del centro (0,0)
+        vertices[0].Set(-ancho / 2.0f, alto / 6.0f);   // Abajo izquierda
+        vertices[1].Set(ancho / 2.5f, alto / 6.0f);    // Abajo derecha
+        vertices[2].Set(ancho / 2.5f, -alto / 6.0f);   // Arriba derecha
+        vertices[3].Set(-ancho / 2.0f, -alto / 6.0f);  // Arriba izquierda
+    
+    }
+    else {
+
+        // Lo mismo pero invertido para el flipper derecho
+        vertices[0].Set(ancho / 2.0f, alto / 6.0f);
+        vertices[1].Set(-ancho / 2.5f, alto / 6.0f);
+        vertices[2].Set(-ancho / 2.5f, -alto / 6.0f);
+        vertices[3].Set(ancho / 2.0f, -alto / 6.0f);
+    
+    }
+
+    // Le paso el array de vértices y le digo cuántos son (4)
+    b2PolygonShape formaFlipper;    
+    formaFlipper.Set(vertices, 4);
+
+    // Propiedades
     b2FixtureDef fixFlipper;
     fixFlipper.shape = &formaFlipper;
-    fixFlipper.density = 10.0f; // Bastante pesado para que pegue con fuerza
+    fixFlipper.density = 0.1f;
     fixFlipper.friction = 0.2f;
     cuerpo->CreateFixture(&fixFlipper);
 
@@ -61,7 +84,7 @@ Flipper::Flipper(b2World* mundo, b2Vec2 posicion, float w, float h, bool esIzqui
 
     // Configuramos el motor del joint (apagado por defecto)
     defJoint.enableMotor = true;
-    defJoint.maxMotorTorque = 5000.0f; // Fuerza bruta del paletazo
+    defJoint.maxMotorTorque = 100000000.0f; // Fuerza bruta del paletazo
     defJoint.motorSpeed = 0.0f;
 
     joint = (b2RevoluteJoint*)mundo->CreateJoint(&defJoint);
@@ -76,19 +99,24 @@ Flipper::~Flipper() {
 
 void Flipper::Activar(bool presionado) {
 
-    // Si toco la tecla, el motor gira hacia arriba.
-    // Si suelto, el motor gira en reversa para volver a la posición de reposo.
     float velocidad;
     
     if (presionado) {
-        velocidad = 20.0f;
+        if (izquierdo) {
+            velocidad = -30.0f; // Fuerza hacia arriba (anti-horario)
+        }
+        else {
+            velocidad = 30.0f;  // Fuerza hacia arriba (horario)
+        }
     }
     else {
-        velocidad = -10.0f;
+        if (izquierdo) {
+            velocidad = 15.0f;  // Vuelve a caer
+        }
+        else {
+            velocidad = -15.0f; // Vuelve a caer
+        }
     }
-    
-    // Invierto la dirección si es el flipper derecho
-    if (!izquierdo) velocidad = -velocidad;
 
     joint->SetMotorSpeed(velocidad);
 
@@ -110,19 +138,12 @@ void Flipper::Dibujar() {
     }
 
     Rectangle origen = { 0.0f, 0.0f, anchoTextura, (float)texturaPuerro.height };
+
+    // pos.x y pos.y ya son el centro físico real del objeto
     Rectangle destino = { pos.x, pos.y, ancho, alto };
 
-    // El eje de rotación visual tiene que coincidir con el offset de Box2D
-    float ejeX;
-    
-    if (izquierdo) {
-        ejeX = 0.0f;
-    }
-    else {
-        ejeX = ancho;
-    }
-
-    Vector2 ejeRotacion = { ejeX, alto / 2.0f };
+    // El eje de rotación visual es siempre el centro de la textura
+    Vector2 ejeRotacion = { ancho / 2.0f, alto / 2.0f };
 
     DrawTexturePro(texturaPuerro, origen, destino, ejeRotacion, angulo, WHITE);
 

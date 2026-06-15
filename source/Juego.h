@@ -7,6 +7,16 @@
 #include <vector>
 #include <memory>
 
+// Escuchador de colisiones
+class EscuchadorColisiones : public b2ContactListener {
+
+public:
+
+    EscuchadorColisiones();
+    void BeginContact(b2Contact* contacto) override;
+
+};
+
 class Juego {
 
 private:
@@ -14,6 +24,10 @@ private:
     // Mundo físico (contenedor) + objetos
     std::unique_ptr<b2World> mundo;
     std::vector<std::unique_ptr<ObjetoFisico>> objetos;
+
+    // Audio + escuchador
+    //Music musicaFondo;
+    std::unique_ptr<EscuchadorColisiones> escuchador;
 
     // Objetos
     std::unique_ptr<Flipper> flipperIzq;
