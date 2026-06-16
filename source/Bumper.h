@@ -33,4 +33,6 @@ public:
     void Dibujar() override;
     void Golpeado() override;
 
+    bool EsEvolucionFinal() override;
+
 };

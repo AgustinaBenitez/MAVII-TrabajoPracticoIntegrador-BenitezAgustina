@@ -48,19 +48,19 @@ Bumper::~Bumper() {
 
 void Bumper::Golpeado() {
 
+    // Lógica para la evolución
+    contadorGolpes++;
+
     PlaySound(sonidoActual); // Es decir, el que corresponde al bumper golpeado
 
     // Efecto visual
     framesEfecto = 10; // Lo achico durante 10 frames
     escalaVisual = 0.8f; // Se achica a un 80% de su tamaño
 
-    // Lógica para la evolución
-    contadorGolpes++;
-
-    if (etapaEvolucion == 0 && contadorGolpes >= 16) {
+    if (contadorGolpes == 5 && etapaEvolucion == 0) {
         Evolucionar();
     }
-    else if (etapaEvolucion == 1 && contadorGolpes >= 36) {
+    else if (contadorGolpes == 10 && etapaEvolucion == 1) {
         Evolucionar();
     }
 
@@ -68,23 +68,21 @@ void Bumper::Golpeado() {
 
 void Bumper::Evolucionar() {
 
-    // Indispensable descargar los recursos viejos para evitar memory leaks ---- Me ayudó Gemini porque yo por mí misma no encontraba por qué los estaba teniendo
-    UnloadTexture(texturaActual);
-    UnloadSound(sonidoActual);
+    if (etapaEvolucion < 2) {
 
-    etapaEvolucion++;
+        etapaEvolucion++;
 
-    if (etapaEvolucion == 1) {
+        // Indispensable descargar los recursos viejos para evitar memory leaks ---- Me ayudó Gemini porque yo por mí misma no encontraba por qué los estaba teniendo
+        UnloadTexture(texturaActual);
+        UnloadSound(sonidoActual);
 
-        texturaActual = LoadTexture("assets/img/texturaIvysaur.png");
-        sonidoActual = LoadSound("assets/audio/sonidoIvysaur.wav");
-    
-    }
-    else if (etapaEvolucion == 2) {
+        // Cargo la nueva textura y sonido leyendo dinámicamente la posición del arreglo
+        texturaActual = LoadTexture(rutasTexturas[etapaEvolucion]);
+        sonidoActual = LoadSound(rutasSonidos[etapaEvolucion]);
 
-        texturaActual = LoadTexture("assets/img/texturaVenusaur.png");
-        sonidoActual = LoadSound("assets/audio/sonidoVenusaur.wav");
-    
+        // El pokémon emitirá su nuevo grito apenas evoluciona
+        PlaySound(sonidoActual);
+
     }
 
 }
@@ -111,5 +109,11 @@ void Bumper::Dibujar() {
     Vector2 ejeRotacion = { diametroVisual / 2.0f, diametroVisual / 2.0f };
 
     DrawTexturePro(texturaActual, origen, destino, ejeRotacion, 0.0f, WHITE);
+
+}
+
+bool Bumper::EsEvolucionFinal() {
+
+    return etapaEvolucion == 2; // Devuelve true si es Charizard/Venusaur/Blastoise
 
 }

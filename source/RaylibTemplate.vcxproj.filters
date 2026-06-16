@@ -33,6 +33,15 @@
     <ClCompile Include="Bumper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Borde.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tirador.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ascensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Juego.h">
@@ -48,6 +57,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bumper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Borde.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tirador.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ascensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
