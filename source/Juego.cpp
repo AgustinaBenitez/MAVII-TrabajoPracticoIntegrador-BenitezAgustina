@@ -88,9 +88,13 @@ void Juego::Actualizar() {
         }
 
         // CHEQUEO DE VICTORIA Y DERROTA
+        
         b2Vec2 posPelota = pelotaPrincipal->GetCuerpo()->GetPosition();
 
-        //Derrota
+        // Obtengo la velocidad lineal de la pelota para saber hacia dónde viaja
+        b2Vec2 velPelota = pelotaPrincipal->GetCuerpo()->GetLinearVelocity();
+
+        // Derrota
         
         // Si se va la pelota por debajo de la pantalla (Y > 620)
         if (posPelota.y > 620.0f) {
@@ -99,7 +103,7 @@ void Juego::Actualizar() {
 
         // Si vuelve con Spoink (atrapada en el pasillo derecho)
         // Solo chequeo esto si Spoink YA disparó, porque sino pierdo apenas abro el juego
-        if (tirador->YaDisparo() && posPelota.x > 645.0f && posPelota.y > 450.0f) {
+        if (tirador->YaDisparo() && posPelota.x > 645.0f && posPelota.y > 450.0f && velPelota.y > -1.0f) {
             estadoActual = PERDISTE;
         }
 
@@ -184,23 +188,6 @@ void Juego::Renderizar() {
             DrawText("Presiona R para volver a jugar", 230, 380, 25, GRAY);
         
         }
-
-        // Muestro carteles
-        //DrawText("ESPACIO para explicaciones", 25, 21, 30, DARKGRAY);
-        //DrawText("R para reiniciar", 25, 61, 30, DARKGRAY);
-
-    // Dejo esto para las explicaciones futuras
-    //if (modoDebug) {
-    //    if (cosa) cosa->DibujarDebug();
-    //}
-
-    // Para ver las coordenadas
-    // Obtengo las posiciones actuales del cursor
-    //int mouseX = GetMouseX();
-    //int mouseY = GetMouseY();
-
-    // Dibujo el texto en la esquina superior izquierda de la pantalla
-    //DrawText(TextFormat("X: %i / Y: %i", mouseX, mouseY), 10, 10, 20, GREEN);
 
     EndDrawing();
 
