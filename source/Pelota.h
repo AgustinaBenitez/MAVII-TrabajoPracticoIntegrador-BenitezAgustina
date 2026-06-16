@@ -14,5 +14,6 @@ public:
     ~Pelota();
 
     void Dibujar() override;
+    void DibujarDebug() override;
 
 };

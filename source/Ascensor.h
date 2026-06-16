@@ -20,4 +20,6 @@ public:
 
     void Actualizar();
 
+    void DibujarDebug();
+
 };

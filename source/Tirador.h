@@ -24,4 +24,6 @@ public:
 
     bool YaDisparo() { return yaDisparo; }
 
+    void DibujarDebug() override;
+
 };

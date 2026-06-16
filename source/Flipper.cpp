@@ -145,3 +145,29 @@ void Flipper::Dibujar() {
     DrawTexturePro(texturaPuerro, origen, destino, ejeRotacion, angulo, WHITE);
 
 }
+
+void Flipper::DibujarDebug() {
+
+    b2Vec2 ancla = joint->GetAnchorA();
+
+    // Círculo central y área de rotación visual
+    DrawCircle(ancla.x, ancla.y, 5.0f, RED);
+    DrawCircleLines(ancla.x, ancla.y, 60.0f, Fade(RED, 0.4f));
+
+    // Textos explicativos
+    if (izquierdo) {
+
+        DrawText("Revolute Joint", ancla.x - 70, ancla.y + 35, 15, RED);
+        DrawText("Permite rotacion alrededor de un punto", ancla.x - 70, ancla.y + 55, 10, BLACK);
+        DrawText("Cuerpo Dinamico", ancla.x - 70, ancla.y + 70, 12, BLUE);
+    
+    }
+    else {
+
+        DrawText("Revolute Joint", ancla.x - 30, ancla.y + 35, 15, RED);
+        DrawText("Permite rotacion alrededor de un punto", ancla.x - 30, ancla.y + 55, 10, BLACK);
+        DrawText("Cuerpo Dinamico", ancla.x - 30, ancla.y + 70, 12, BLUE);
+
+    }
+
+}

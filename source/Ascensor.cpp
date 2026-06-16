@@ -103,3 +103,35 @@ void Ascensor::Dibujar() {
     DrawTexturePro(texturaGeodude, origen, destino, ejeRotacion, 0.0f, WHITE);
 
 }
+
+void Ascensor::DibujarDebug() {
+
+    b2Vec2 ancla = joint->GetAnchorA();
+    float inferior = joint->GetLowerLimit();
+    float superior = joint->GetUpperLimit();
+
+    // Como viaja en el eje Y, sumo los límites a la posición original del ancla
+    Vector2 inicio = { ancla.x, ancla.y + inferior };
+    Vector2 fin = { ancla.x, ancla.y + superior };
+
+    // Línea de riel de movimiento con punto de anclaje
+    DrawLineEx(inicio, fin, 4.0f, DARKGREEN);
+    DrawCircle(ancla.x, ancla.y, 4.0f, BLUE);
+
+    // Chequeo de qué lado de la pantalla está el ascensor para acomodar el texto
+    if (ancla.x < 450.0f) {
+
+        DrawText("Prismatic Joint", ancla.x - 120, ancla.y - 65, 15, BLUE);
+        DrawText("Restringe el movimiento a una unica direccion", ancla.x - 120, ancla.y - 45, 10, BLACK);
+        DrawText("Cuerpo Dinamico", ancla.x - 120, ancla.y - 30, 12, BLUE);
+
+    }
+    else {
+
+        DrawText("Prismatic Joint", ancla.x + 20, ancla.y - 65, 15, BLUE);
+        DrawText("Restringe el movimiento a una unica direccion", ancla.x + 20, ancla.y - 45, 10, BLACK);
+        DrawText("Cuerpo Dinamico", ancla.x + 20, ancla.y - 30, 12, BLUE);
+    
+    }
+
+}

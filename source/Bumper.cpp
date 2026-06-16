@@ -117,3 +117,14 @@ bool Bumper::EsEvolucionFinal() {
     return etapaEvolucion == 2; // Devuelve true si es Charizard/Venusaur/Blastoise
 
 }
+
+void Bumper::DibujarDebug() {
+
+    b2Vec2 pos = cuerpo->GetPosition();
+
+    // Le dibujo un círculo naranja y explico su función
+    DrawCircleLines(pos.x, pos.y, radio, ORANGE);
+    DrawText("Cuerpo Estatico", pos.x - 45, pos.y - radio - 25, 15, ORANGE);
+    DrawText("Con sensor de colision e impulso", pos.x - 45, pos.y - radio - 10, 10, BLACK);
+
+}

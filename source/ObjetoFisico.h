@@ -18,6 +18,7 @@ public:
     b2Body* GetCuerpo() { return cuerpo; }
 
     virtual void Dibujar() = 0;
+    virtual void DibujarDebug() {}
 
     virtual void Golpeado() {} // Para que las clases hijas reaccionen a los choques
     virtual bool EsEvolucionFinal() { return false; } // Para la condición de victoria

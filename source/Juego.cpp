@@ -189,6 +189,49 @@ void Juego::Renderizar() {
         
         }
 
+        // Textos para la INTERFAZ
+
+        // Título central
+        DrawText("POKE-PINBALL", 250, 15, 50, MAROON);
+
+        // Panel Izquierdo: Controles
+        DrawText("CONTROLES", 15, 50, 25, BLACK);
+        DrawText("A: Flipper Izq", 15, 80, 20, DARKGRAY);
+        DrawText("L: Flipper Der", 15, 105, 20, DARKGRAY);
+        DrawText("ESP: Lanzar", 15, 130, 20, DARKGRAY);
+        DrawText("R: Reiniciar", 15, 155, 20, DARKGRAY);
+        DrawText("I: Mostrar info", 15, 180, 20, DARKGRAY);
+
+        // Panel Derecho: Objetivos
+        DrawText("Evoluciona", 720, 50, 20, DARKGRAY);
+        DrawText("los 3 pokemones", 720, 70, 20, DARKGRAY);
+        DrawText("PARA GANAR!", 720, 95, 25, DARKGREEN);
+
+        // Pista de mecánicas
+        DrawText("Pista: Evolucionan", 720, 135, 20, MAROON);
+        DrawText("a los 5 y 10 hits", 720, 155, 20, MAROON);
+
+        // Condiciones de derrota
+        DrawText("CUIDADO!", 720, 195, 25, RED);
+        DrawText("Que no se caiga", 720, 225, 20, DARKGRAY);
+        DrawText("ni se trabe", 720, 245, 20, DARKGRAY);
+        DrawText("tu pokebola!", 720, 265, 20, DARKGRAY);
+
+        // Mostrando info
+        if (modoDebug) {
+
+            if (flipperIzq) flipperIzq->DibujarDebug();
+            if (flipperDer) flipperDer->DibujarDebug();
+            if (ascensorIzq) ascensorIzq->DibujarDebug();
+            if (ascensorDer) ascensorDer->DibujarDebug();
+            if (tirador) tirador->DibujarDebug();
+        
+            for (const auto& obj : objetos) {
+                obj->DibujarDebug();
+            }
+
+        }
+
     EndDrawing();
 
 }
@@ -236,8 +279,8 @@ void Juego::Reiniciar() {
     objetos.emplace_back(std::move(nuevaPelota));
 
     // Flippers
-    flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 325.0f, 520.0f }, 85.0f, 30.0f, true);
-    flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 525.0f, 520.0f }, 85.0f, 30.0f, false);
+    flipperIzq = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 330.0f, 520.0f }, 90.0f, 30.0f, true);
+    flipperDer = std::make_unique<Flipper>(mundo.get(), b2Vec2{ 525.0f, 520.0f }, 90.0f, 30.0f, false);
 
     // Ascensores (Geodudes) en los pasillos laterales
     ascensorIzq = std::make_unique<Ascensor>(mundo.get(), b2Vec2{ 257.0f, 530.0f }, 110.0f, 42.0f, true);
@@ -269,6 +312,5 @@ Juego::~Juego() {
     // Descargo los recursos de Raylib
     UnloadMusicStream(musicaFondo);
     UnloadTexture(texturaFondo);
-    //UnloadSound(sonidoX);
 
 }

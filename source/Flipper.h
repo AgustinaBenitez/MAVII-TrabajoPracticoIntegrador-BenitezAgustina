@@ -21,4 +21,6 @@ public:
     // Para mover la paleta desde Juego.cpp
     void Activar(bool presionado);
 
+    void DibujarDebug();
+
 };

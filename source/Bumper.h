@@ -35,4 +35,6 @@ public:
 
     bool EsEvolucionFinal() override;
 
+    void DibujarDebug() override;
+
 };
